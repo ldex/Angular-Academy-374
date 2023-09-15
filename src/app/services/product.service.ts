@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.interface';
-import { Observable, delay, tap } from 'rxjs';
+import { Observable, delay, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,14 @@ export class ProductService {
 
   constructor(private http: HttpClient) {
     this.initProducts();
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this
+              .products$
+              .pipe(
+                map(products => products.find(product => product.id === id))
+              )
   }
 
   initProducts() {

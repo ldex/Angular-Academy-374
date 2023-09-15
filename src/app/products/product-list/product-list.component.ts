@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
@@ -14,11 +15,35 @@ export class ProductListComponent {
   products$: Observable<Product[]>;
   selectedProduct: Product;
 
-  onSelect(product: Product) {
-    this.selectedProduct = product;
+  // Pagination
+  pageSize = 5;
+  start = 0;
+  end = this.pageSize;
+  pageNumber = 1;
+
+  previousPage() {
+    this.start -= this.pageSize;
+    this.end -= this.pageSize;
+    this.pageNumber--;
+    this.selectedProduct = null;
   }
 
-  constructor(private productService: ProductService) {
+  nextPage() {
+    this.start += this.pageSize;
+    this.end += this.pageSize;
+    this.pageNumber++;
+    this.selectedProduct = null;
+  }
+
+  onSelect(product: Product) {
+    this.selectedProduct = product;
+    this.router.navigateByUrl('/products/' + product.id);
+  }
+
+  constructor(
+    private productService: ProductService,
+    private router: Router
+    ) {
     this.products$ = productService.products$;
 
     // this
