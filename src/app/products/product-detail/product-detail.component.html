@@ -18,4 +18,13 @@
     </p>
     <p>Modified date:
         {{product.modifiedDate | date}}</p>
+    <button (click)="confirm.showModal()">Delete Product</button>
+    <dialog #confirm>
+        <p>Are you sure to delete this product ?</p>
+        <div class="right">
+        <button (click)="delete()" autofocus>Ok</button>
+        &nbsp;
+        <button (click)="confirm.close()">Cancel</button>
+        </div>
+    </dialog>
 </div>
